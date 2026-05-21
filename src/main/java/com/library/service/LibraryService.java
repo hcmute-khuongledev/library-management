@@ -21,8 +21,8 @@ public class LibraryService {
         books.add(new Book("Huong doi tuong voi Java", "Tran Thi B", 2022, 9));
         books.add(new Book("Cau truc du lieu & giai thuat", "Nguyen Van A", 2024, 15));
         
-        readers.add(new Reader("Le Khuong", "26tx810014@student.hcmute.edu.vn", "0123456789", ReaderType.SINH_VIEN));
-        readers.add(new Reader("Thay Phuc", "phuc@hcmute.edu.vn", "0987654321", ReaderType.GIANG_VIEN));
+        readers.add(new Reader("Le Khuong", "26tx810014@student.hcmute.edu.vn", "0123456789", ReaderType.STUDENT));
+        readers.add(new Reader("Thay Phuc", "phuc@hcmute.edu.vn", "0987654321", ReaderType.TEACHER));
     }
 
     public void addBook(Book book) { books.add(book); }
@@ -31,8 +31,8 @@ public class LibraryService {
     public List<Book> getBooks() { return books; }
     public List<Reader> getReaders() { return readers; }
 
-    public boolean borrowBook(String readerCode, String bookCode, LocalDate borrowDate, LocalDate dueDate) {
-        Reader reader = findReaderByCode(readerCode);
+    public boolean borrowBook(String readerEmail, String bookCode, LocalDate borrowDate, LocalDate dueDate) {
+        Reader reader = findReaderByEmail(readerEmail);
         Book book = findBookByCode(bookCode);
 
         if (reader == null) {
@@ -62,8 +62,9 @@ public class LibraryService {
         return true;
     }
 
-    public boolean returnBook(String slipCode, LocalDate returnDate) {
+    public boolean returnBook(String slipCode) {
         BorrowSlip borrowSlip = findSlipByCode(slipCode);
+        LocalDate returnDate = LocalDate.now();
 
         if (borrowSlip == null) {
             System.out.println("Borrow slip not found!");
@@ -162,6 +163,15 @@ public class LibraryService {
     public Reader findReaderByCode(String readerCode) {
         for (Reader reader : readers) {
             if (reader.getReaderCode().equals(readerCode)) {
+                return reader;
+            }
+        }
+        return null;
+    }
+
+    public Reader findReaderByEmail(String email) {
+        for (Reader reader : readers) {
+            if (reader.getEmail().equalsIgnoreCase(email)) {
                 return reader;
             }
         }

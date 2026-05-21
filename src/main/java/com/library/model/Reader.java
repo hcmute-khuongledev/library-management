@@ -34,6 +34,11 @@ public class Reader {
 
     public int getMaxBorrowLimit() {
         return getReaderType().getMaxBooks();
+    }   
+
+    @Override
+    public String toString() {
+        return String.format("Reader Code: %s | Name: %s | Email: %s | Type: %s", readerCode, name, email, readerType == ReaderType.STUDENT ? "Student" : "Teacher");
     }
 
 }

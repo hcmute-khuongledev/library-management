@@ -1,8 +1,8 @@
 package com.library.constant;
 
 public enum ReaderType {
-    SINH_VIEN(3),
-    GIANG_VIEN(5);
+    STUDENT(3),
+    TEACHER(5);
 
     private final int maxBooks;
 
