@@ -10,7 +10,7 @@ public class Reader {
     private String email;
     private ReaderType readerType;
 
-    public Reader(String name, String email, String phoneNumber, ReaderType readerType) {
+    public Reader(String name, String email, ReaderType readerType) {
         this.id = COUNTER_ID++;
         this.readerCode = generateReaderCode();
         this.name = name;
@@ -20,6 +20,10 @@ public class Reader {
 
     private String generateReaderCode() {
         return String.format("HCMUTE-READER-%05d", id);
+    }
+
+    public int getMaxBorrow() {
+        return 0; 
     }
 
     public String getReaderCode() { return readerCode; }

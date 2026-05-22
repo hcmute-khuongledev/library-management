@@ -21,8 +21,8 @@ public class LibraryService {
         books.add(new Book("Huong doi tuong voi Java", "Tran Thi B", 2022, 9));
         books.add(new Book("Cau truc du lieu & giai thuat", "Nguyen Van A", 2024, 15));
         
-        readers.add(new Reader("Le Khuong", "26tx810014@student.hcmute.edu.vn", "0123456789", ReaderType.STUDENT));
-        readers.add(new Reader("Thay Phuc", "phuc@hcmute.edu.vn", "0987654321", ReaderType.TEACHER));
+        readers.add(new Reader("Le Khuong", "26tx810014@student.hcmute.edu.vn", ReaderType.STUDENT));
+        readers.add(new Reader("Thay Phuc", "phuc@hcmute.edu.vn", ReaderType.TEACHER));
     }
 
     public void addBook(Book book) { books.add(book); }
@@ -58,7 +58,8 @@ public class LibraryService {
         }
         BorrowSlip newSlip = new BorrowSlip(reader, book, borrowDate, dueDate);
         borrowSlips.add(newSlip);
-        System.out.println("Book borrowed successfully! Slip Code: " + newSlip.getSlipCode());
+        System.out.println("Book borrowed successfully!");
+        System.out.println(newSlip);
         return true;
     }
 

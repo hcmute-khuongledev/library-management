@@ -36,14 +36,21 @@ public class App {
                 case 1:
                     System.out.println("--- DANH SACH SACH HIEN CO ---");
                     for (Book b : library.getBooks()) System.out.println(b);
-                    System.out.println("--- DANH SACH DOC GIA ---");
+                    System.out.println("\n--- DANH SACH DOC GIA ---");
                     for (Reader r : library.getReaders()) System.out.println(r);
                     break;
 
                 case 2:
                     System.out.print("Nhap email edu: "); String readerEmail = scanner.nextLine();
+                    // System.out.print("So sach muon: "); int numBooks = scanner.nextInt();
+            
                     System.out.print("Nhap ma sach: "); String bookCode = scanner.nextLine();
                     System.out.print("So ngay muon: "); int loanDays = scanner.nextInt();
+                    scanner.nextLine(); 
+                    if (loanDays <= 0) {
+                        System.out.println("So ngay muon phai lon hon 0!");
+                        break;
+                    }
                     LocalDate borrowDate = LocalDate.now();
                     LocalDate dueDate = borrowDate.plusDays(loanDays);
 
@@ -51,13 +58,13 @@ public class App {
                     break;
 
                 case 3:
-                    System.out.println("Nhap ma phieu muon: "); String slipCode = scanner.nextLine();
+                    System.out.print("Nhap ma phieu muon: "); String slipCode = scanner.nextLine();
                     library.returnBook(slipCode);
                     break;
 
                 case 4:
                     System.out.print("Nhap ten sach hoac tac gia: "); String keyword = scanner.nextLine();
-                    System.out.println("--- KET QUA TIM KIEM ---");
+                    System.out.println("\n--- KET QUA TIM KIEM ---");
                     List<Book> searchResults = library.searchBook(keyword);
                     if (searchResults.isEmpty()) {
                         System.out.println("Khong tim thay sach nao!");
@@ -70,14 +77,19 @@ public class App {
                     break;
 
                 case 5:
-                    System.out.println("--- PHIEU MUON QUA HAN ---");
-                    for (BorrowSlip slip : library.getOverdueSlips()) {
-                        System.out.println(slip);
+                    System.out.println("\n--- PHIEU MUON QUA HAN ---");
+                    List<BorrowSlip> overdueSlips = library.getOverdueSlips();
+                    if (overdueSlips.isEmpty()) {
+                        System.out.println("Khong co phieu muon nao qua han!");
+                    } else {
+                        for (BorrowSlip slip : overdueSlips) {
+                            System.out.println(slip);
+                        }
                     }
                     break;
 
                 case 6:
-                    System.out.println("--- BAO CAO THONG KE ---");
+                    System.out.println("\n--- BAO CAO THONG KE ---");
                     System.out.println("Tong so sach: " + library.getBooks().size());
                     System.out.println("Tong so doc gia: " + library.getReaders().size());
                     library.getStatistics();
