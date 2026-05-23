@@ -4,7 +4,7 @@ Bài tập 1: Phân tích yêu cầu và xác định lớp
 
 # Class Book
 ## Thuộc tính
-- COUNTER_ID (static long): Bộ đếm tĩnh dùng để tự động tăng ID.
+- COUNTER_ID (static long): Tăng ID tự động.
 - id (long): ID hệ thống.
 - bookCode (String): Mã sách hiển thị theo chuẩn thư viện.
 - title (String): Tên sách.
@@ -23,7 +23,7 @@ Bài tập 1: Phân tích yêu cầu và xác định lớp
 
 # Class Reader
 ## Thuộc tính
-- COUNTER_ID (static long): Bộ đếm tĩnh tự động tăng ID độc giả.
+- COUNTER_ID (static long): Tăng ID tự động
 - id (long): ID hệ thống.
 - readerCode (String): Mã thẻ độc giả hiển thị theo chuẩn.
 - name (String): Họ và tên độc giả.
@@ -39,14 +39,14 @@ Bài tập 1: Phân tích yêu cầu và xác định lớp
 
 # Class BorrowSlip
 ## Thuộc tính
-- COUNTER_ID (static long): Bộ đếm tĩnh tự động tăng ID phiếu mượn.
+- COUNTER_ID (static long): Tăng ID tự động
 - id (long): ID hệ thống.
 - slipCode (String): Mã phiếu mượn.
 - reader (Reader): Tham chiếu đến đối tượng Reader.
 - book (Book): Tham chiếu đến đối tượng Book.
 - borrowDate (LocalDate): Ngày mượn sách thực tế.
 - dueDate (LocalDate): Ngày hẹn trả sách theo quy định.
-- returnDate (LocalDate): Ngày độc giả đem trả sách thực tế.
+- returnDate (LocalDate): Ngày độc giả trả sách thực tế.
 - isReturned (boolean): Trạng thái phiếu (Đã trả / Chưa trả).
 
 ## Phương thức
