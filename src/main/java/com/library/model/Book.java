@@ -46,7 +46,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return String.format("[Book Code: %s | Title: %s | Author: %s | Available: %d]", bookCode, title, author, quantity);
+        return String.format("Book Code: %s | Title: %s | Author: %s | Available: %d", bookCode, title, author, quantity);
     }
 
     public void decreaseQuantity() {

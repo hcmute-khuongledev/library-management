@@ -22,7 +22,7 @@ public class LibraryService {
         books.add(new Book("Cau truc du lieu & giai thuat", "Nguyen Van A", 2024, 15));
         
         readers.add(new Reader("Le Khuong", "26tx810014@student.hcmute.edu.vn", ReaderType.STUDENT));
-        readers.add(new Reader("Thay Phuc", "phuc@hcmute.edu.vn", ReaderType.TEACHER));
+        readers.add(new Reader("Thay Phuc", "phuc@hcmute.edu.vn", ReaderType.LECTURER));
     }
 
     public void addBook(Book book) { books.add(book); }

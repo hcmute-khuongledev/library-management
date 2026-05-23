@@ -26,14 +26,14 @@ public class Reader {
         return 0; 
     }
 
-    public String getReaderCode() { return readerCode; }
-    public String getName() { return name; }
+    public String getReaderCode() { return this.readerCode; }
+    public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }
 
-    public String getEmail() { return email; }
+    public String getEmail() { return this.email; }
     public void setEmail(String email) { this.email = email; }
 
-    public ReaderType getReaderType() { return readerType; }
+    public ReaderType getReaderType() { return this.readerType; }
     public void setReaderType(ReaderType readerType) { this.readerType = readerType; }
 
     public int getMaxBorrowLimit() {
