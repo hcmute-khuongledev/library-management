@@ -3,10 +3,14 @@ package com.library;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+
+import com.library.constant.ReaderType;
 import com.library.model.Book;
 import com.library.model.BorrowSlip;
+import com.library.model.Lecturer;
 import com.library.service.LibraryService;
 import com.library.model.Reader;
+import com.library.model.Student;
 
 /**
  * Hello world!
@@ -26,6 +30,8 @@ public class App {
             System.out.println("4. TTim kiem sach theo ten hoac tac gia");
             System.out.println("5. Liet ke cac phieu muon qua han");
             System.out.println("6. Xem bao cao thong ke");
+            System.out.println("7. Them sach");
+            System.out.println("8. Them doc gia");
             System.out.println("0. Exit");
             System.out.print("Chon chuc nang: ");
             
@@ -95,7 +101,35 @@ public class App {
                     library.getStatistics();
                     break;
 
-                case 0:
+                case 7:
+                    System.out.print("Nhap ten sach: "); String title = scanner.nextLine();
+                    System.out.print("Nhap ten tac gia: "); String author = scanner.nextLine();
+                    System.out.print("Nhap nam xuat ban: "); int publishYear = scanner.nextInt();
+                    System.out.print("Nhap so luong: "); int quantity = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Book newBook = new Book(title, author, publishYear, quantity);
+                    library.addBook(newBook);
+                    System.out.println("Sach moi da duoc them vao thu vien!");
+                    break;
+
+                case 8:
+                    System.out.print("Nhap ten doc gia: "); String newReaderName = scanner.nextLine();
+                    System.out.print("Nhap email: "); String newReaderEmail = scanner.nextLine();
+                    System.out.print("Nhap loai doc gia (1 - Sinh vien, 2 - Giang vien): "); int readerTypeChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Reader newReader;
+                    if (readerTypeChoice == 1) {
+                        newReader = new Student(newReaderName, newReaderEmail);
+                    } else if (readerTypeChoice == 2) {
+                        newReader = new Lecturer(newReaderName, newReaderEmail);
+                    } else {
+                        System.out.println("Lua chon khong hop le!");
+                        break;
+                    }
+                    library.addReader(newReader);
+                    System.out.println("Doc gia moi da duoc them vao thu vien!");
                     break;
 
                 default:
