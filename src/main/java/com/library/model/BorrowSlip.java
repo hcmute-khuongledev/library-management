@@ -2,33 +2,36 @@ package com.library.model;
 
 import com.library.constant.LibraryConstant;
 import java.time.LocalDate;
+import java.util.List;
 
 public class BorrowSlip {
     private static long COUNTER_ID = 1;
     private long id;
     private String slipCode;
     private Reader reader;
-    private Book book;
+    private List<Book> books;
     private LocalDate borrowDate;
     private LocalDate dueDate;
     private LocalDate returnDate;
     private boolean isReturned;
 
-    public BorrowSlip(Reader reader, Book book, LocalDate borrowDate, LocalDate dueDate) {
+    public BorrowSlip(Reader reader, List<Book> books, LocalDate borrowDate, LocalDate dueDate) {
         this.id = COUNTER_ID++;
         this.slipCode = generateSlipCode();
         this.reader = reader;
-        this.book = book;
+        this.books = books;
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
         this.isReturned = false;
 
-        book.decreaseQuantity();
+        for (Book book : books) {
+            book.decreaseQuantity();
+        }
     }
     
     public String getSlipCode() { return this.slipCode; }
     public Reader getReader() { return this.reader; }
-    public Book getBook() { return this.book; }
+    public List<Book> getBooks() { return this.books; }
     public LocalDate getBorrowDate() { return this.borrowDate; }
     public LocalDate getDueDate() { return this.dueDate; }
     public LocalDate getReturnDate() { return this.returnDate; }
@@ -52,7 +55,12 @@ public class BorrowSlip {
 
     @Override
     public String toString() {
-        return String.format("Slip Code: %s | Reader: %s | Book: %s | Borrow Date: %s | Due Date: %s | Status: %s",
-                slipCode, reader.getName(), book.getTitle(), borrowDate, dueDate, isReturned ? "Returned" : "Not Returned");
+        StringBuilder bookTitles = new StringBuilder();
+        for (Book b : books) {
+            bookTitles.append("【").append(b.getTitle()).append("】 ");
+        }
+
+        return String.format("Slip Code: %s | Reader: %s | Books: %s | Borrow Date: %s | Due Date: %s | Status: %s",
+                slipCode, reader.getName(), bookTitles.toString(), borrowDate, dueDate, isReturned ? "Returned" : "Not Returned");
     }
 }

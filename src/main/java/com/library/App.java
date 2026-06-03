@@ -1,10 +1,9 @@
 package com.library;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import com.library.constant.ReaderType;
 import com.library.model.Book;
 import com.library.model.BorrowSlip;
 import com.library.model.Lecturer;
@@ -48,9 +47,21 @@ public class App {
 
                 case 2:
                     System.out.print("Nhap email edu: "); String readerEmail = scanner.nextLine();
-                    // System.out.print("So sach muon: "); int numBooks = scanner.nextInt();
-            
-                    System.out.print("Nhap ma sach: "); String bookCode = scanner.nextLine();
+                    List<String> listBookCodes = new ArrayList<>();
+                    while (true) {
+                        System.out.print("Nhap ma sach: (Hoac nhan ENTER de ket thuc chon): ");
+                        String code = scanner.nextLine().trim();
+                        
+                        if (code.isEmpty()) {
+                            break;
+                        }
+                        listBookCodes.add(code);
+                    }
+
+                    if (listBookCodes.isEmpty()) {
+                        System.out.println("Ban chua chon sach nao!");
+                        break;
+                    }
                     System.out.print("So ngay muon: "); int loanDays = scanner.nextInt();
                     scanner.nextLine(); 
                     if (loanDays <= 0) {
@@ -60,7 +71,7 @@ public class App {
                     LocalDate borrowDate = LocalDate.now();
                     LocalDate dueDate = borrowDate.plusDays(loanDays);
 
-                    library.borrowBook(readerEmail, bookCode, borrowDate, dueDate);
+                    library.borrowBook(readerEmail, listBookCodes, borrowDate, dueDate);
                     break;
 
                 case 3:

@@ -31,35 +31,49 @@ public class LibraryService {
     public List<Book> getBooks() { return books; }
     public List<Reader> getReaders() { return readers; }
 
-    public boolean borrowBook(String readerEmail, String bookCode, LocalDate borrowDate, LocalDate dueDate) {
+    public boolean borrowBook(String readerEmail, List<String> bookCodes, LocalDate borrowDate, LocalDate dueDate) {
         Reader reader = findReaderByEmail(readerEmail);
-        Book book = findBookByCode(bookCode);
-
+        
         if (reader == null) {
-            System.out.println("Reader not found!");
+            System.out.println("Reader " + readerEmail + " not found!");
             return false;
         } 
-        if (book == null) {
-            System.out.println("Book not found!");
-            return false;
-        }
-        if (!book.isAvailable()) {
-            System.out.println("Book is currently unavailable!");
-            return false;
+
+        int activeBorrowedCount = 0;
+        for (BorrowSlip slip : borrowSlips) {
+            if (slip.getReader().getEmail().equalsIgnoreCase(readerEmail) && !slip.isReturned()) {
+                activeBorrowedCount += slip.getBooks().size();
+            }
         }
 
-        int activeBorrowCount = (int) borrowSlips.stream()
-            .filter(slip -> slip.getReader().equals(reader) && !slip.isReturned())
-            .count();
-
-        if (activeBorrowCount >= reader.getMaxBorrowLimit()) {
-            System.out.println("Reader has reached the maximum borrow limit");
+        int newRequestCount = bookCodes.size();
+        if (activeBorrowedCount + newRequestCount > reader.getMaxBorrowLimit()) {
+            System.out.println("Reader has reached the maximum borrow limit!");
+            System.out.println("You have: " + activeBorrowedCount + " books borrowed. Requesting: " + newRequestCount + " books.");
+            System.out.println("Maximum borrow limit for this reader: " + reader.getMaxBorrowLimit() + " books.");
             return false;
         }
-        BorrowSlip newSlip = new BorrowSlip(reader, book, borrowDate, dueDate);
-        borrowSlips.add(newSlip);
-        System.out.println("Book borrowed successfully!");
-        System.out.println(newSlip);
+        
+        List<Book> selectedBooks = new ArrayList<>();
+        for (String code : bookCodes) {
+            Book book = findBookByCode(code);
+            if (book == null) {
+                System.out.println("Error: Book with code " + code + " not found!");
+                return false;
+            }
+            if (!book.isAvailable()) {
+                System.out.println("Error: Book " + book.getTitle() + " is currently unavailable!");
+                return false;
+            }
+            selectedBooks.add(book);
+        }
+        BorrowSlip slip = new BorrowSlip(reader, selectedBooks, borrowDate, dueDate);
+        borrowSlips.add(slip);
+        System.out.println("\n========================================");
+        System.out.println("CREATED NEW BORROW SLIP!");
+        System.out.println("Your slip code: " + slip.getSlipCode());
+        System.out.println("Total books borrowed today: " + newRequestCount + " books");
+        System.out.println("========================================\n");
         return true;
     }
 
@@ -79,9 +93,11 @@ public class LibraryService {
 
         borrowSlip.setReturnDate(returnDate);
         borrowSlip.markAsReturned();
-        borrowSlip.getBook().increaseQuantity();
+        for (Book b : borrowSlip.getBooks()) {
+            b.increaseQuantity();
+        }
 
-         if (returnDate.isAfter(borrowSlip.getDueDate())) {
+        if (returnDate.isAfter(borrowSlip.getDueDate())) {
             long lateDays = ChronoUnit.DAYS.between(borrowSlip.getDueDate(), returnDate);
             long fine = BorrowSlip.calculate(lateDays);
 
@@ -124,10 +140,11 @@ public class LibraryService {
         Map<String, Integer> readerCounts = new HashMap<>();
 
         for (BorrowSlip borrowSlip : borrowSlips) {
-            String bookCode = borrowSlip.getBook().getBookCode();
+            for (Book book : borrowSlip.getBooks()) {
+                String bookCode = book.getBookCode();
+                bookCounts.put(bookCode, bookCounts.getOrDefault(bookCode, 0) + 1);
+            }
             String readerCode = borrowSlip.getReader().getReaderCode();
-
-            bookCounts.put(bookCode, bookCounts.getOrDefault(bookCode, 0) + 1);
             readerCounts.put(readerCode, readerCounts.getOrDefault(readerCode, 0) + 1);
         }
 
