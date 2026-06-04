@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.library.constant.ReaderType;
 import com.library.model.Book;
 import com.library.model.BorrowSlip;
+import com.library.model.Lecturer;
 import com.library.model.Reader;
+import com.library.model.Student;
 
 public class LibraryService {
     private List<Book> books = new ArrayList<>();
@@ -20,9 +21,10 @@ public class LibraryService {
         books.add(new Book("Lap trinh Java Core", "Nguyen Van A", 2023, 8));
         books.add(new Book("Huong doi tuong voi Java", "Tran Thi B", 2022, 9));
         books.add(new Book("Cau truc du lieu & giai thuat", "Nguyen Van A", 2024, 15));
-        
-        readers.add(new Reader("Le Khuong", "26tx810014@student.hcmute.edu.vn", ReaderType.STUDENT));
-        readers.add(new Reader("Thay Phuc", "phuc@hcmute.edu.vn", ReaderType.LECTURER));
+
+        readers.add(new Student("Le Khuong", "26tx810014@student.hcmute.edu.vn"));
+        readers.add(new Student("Phan Dang Khoa", "26tx810015@student.hcmute.edu.vn"));
+        readers.add(new Lecturer("Thay Phuc", "phuc@hcmute.edu.vn"));
     }
 
     public void addBook(Book book) { books.add(book); }
@@ -99,14 +101,36 @@ public class LibraryService {
 
         if (returnDate.isAfter(borrowSlip.getDueDate())) {
             long lateDays = ChronoUnit.DAYS.between(borrowSlip.getDueDate(), returnDate);
-            long fine = BorrowSlip.calculate(lateDays);
+            // long fine = borrowSlip.getReader().calculateFine((int) lateDays);
 
             System.out.println("Late: " + lateDays + " days");
-            System.out.println("Fine: " + fine + " VND");
+            // System.out.println("Fine: " + fine + " VND");
         }
 
         System.out.println("Book returned successfully.");
         return true;
+    }
+
+    public void showLateFees(int daysLate) { 
+        System.out.println("=== PHI PHAT TRE HAN (" + daysLate + " ngay) ==="); 
+        for (Reader r : readers) { 
+            System.out.printf("%-25s | Fee: %,.0f VND%n", 
+                r.getFullName(), r.calculateLateFee(daysLate)); 
+        } 
+    } 
+
+    public void showAllReaders() { 
+        System.out.println("=== DANH SACH DOC GIA ==="); 
+        for (Reader r : readers) { 
+            System.out.println(r.getInfo());
+        } 
+    } 
+
+    public void showAllBooks() { 
+        System.out.println("=== DANH SACH SACH HIEN CO ==="); 
+        for (Book b : books) { 
+            System.out.println(b);
+        } 
     }
 
     public List<Book> searchBook(String keyword) {

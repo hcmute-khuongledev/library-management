@@ -8,13 +8,25 @@ public class Lecturer extends Reader {
         super(name, email, ReaderType.LECTURER);
     }
 
-    @Override
+    
     public int getMaxBorrow() {
         return getReaderType().getMaxBooks();
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + " | Loai the: Giang vien - So sach duoc muon: " + getMaxBorrow() + " cuon";
+    public double calculateLateFee(int daysLate) {
+        if (daysLate <= 0) {
+            return 0;
+        }
+        return daysLate * 2000;
     }
+
+    // @Override
+    // public String toString() {
+    //     return super.toString() + " | Loai the: Giang vien - So sach duoc muon: " + getMaxBorrow() + " cuon";
+    // }
+
+    @Override 
+    public String getInfo() { 
+        return "[GV] " + getReaderCode() + " | " + getFullName() + " | Email: " + getEmail() + " | Han muon: " + getMaxBorrow() + " cuon"; 
+    } 
 }

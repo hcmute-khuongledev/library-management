@@ -2,7 +2,7 @@ package com.library.model;
 
 import com.library.constant.ReaderType;
 
-public class Reader {
+abstract public class Reader {
     private static long COUNTER_ID = 1;
     private long id;
     private String readerCode;
@@ -22,12 +22,11 @@ public class Reader {
         return String.format("HCMUTE-READER-%05d", id);
     }
 
-    public int getMaxBorrow() {
-        return 0; 
-    }
+    public abstract int getMaxBorrow();
+    public abstract double calculateLateFee(int daysLate);
 
     public String getReaderCode() { return this.readerCode; }
-    public String getName() { return this.name; }
+    public String getFullName() { return this.name; }
     public void setName(String name) { this.name = name; }
 
     public String getEmail() { return this.email; }
@@ -40,9 +39,10 @@ public class Reader {
         return getReaderType().getMaxBooks();
     }   
 
-    @Override
-    public String toString() {
-        return String.format("Reader Code: %s | Name: %s | Email: %s | Type: %s", readerCode, name, email, readerType == ReaderType.STUDENT ? "Student" : "Teacher");
-    }
+    // @Override
+    // public String toString() {
+    //     return String.format("Reader Code: %s | Name: %s | Email: %s | Type: %s", readerCode, name, email, readerType == ReaderType.STUDENT ? "Student" : "Teacher");
+    // }
 
+    public abstract String getInfo();
 }

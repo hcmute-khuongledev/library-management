@@ -42,13 +42,6 @@ public class BorrowSlip {
         return String.format("HCMUTE-SLIP-%05d", id);
     }
 
-    public static long calculate(long lateDays) {
-        if (lateDays <= 0) {
-            return 0;
-        }
-        return lateDays * LibraryConstant.FINE_PER_DAY;
-    }
-
     public void markAsReturned() {
         this.isReturned = true;
     }
@@ -61,6 +54,6 @@ public class BorrowSlip {
         }
 
         return String.format("Slip Code: %s | Reader: %s | Books: %s | Borrow Date: %s | Due Date: %s | Status: %s",
-                slipCode, reader.getName(), bookTitles.toString(), borrowDate, dueDate, isReturned ? "Returned" : "Not Returned");
+                slipCode, reader.getFullName(), bookTitles.toString(), borrowDate, dueDate, isReturned ? "Returned" : "Not Returned");
     }
 }

@@ -39,10 +39,8 @@ public class App {
 
             switch (choice) {
                 case 1:
-                    System.out.println("--- DANH SACH SACH HIEN CO ---");
-                    for (Book b : library.getBooks()) System.out.println(b);
-                    System.out.println("\n--- DANH SACH DOC GIA ---");
-                    for (Reader r : library.getReaders()) System.out.println(r);
+                    library.showAllBooks();
+                    library.showAllReaders();
                     break;
 
                 case 2:
