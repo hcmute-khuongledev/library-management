@@ -13,16 +13,9 @@ public class Student extends Reader {
     }
 
     public double calculateLateFee(int daysLate) {
-        if (daysLate <= 0) {
-            return 0;
-        }
-        return daysLate * 0.25;
+        return 0;
     }
 
-    // @Override
-    // public String toString() {
-    //     return super.toString() + " | Loai the: Sinh vien - So sach duoc muon: " + getMaxBorrow() + " cuon";
-    // }
 
     @Override 
     public String getInfo() { 

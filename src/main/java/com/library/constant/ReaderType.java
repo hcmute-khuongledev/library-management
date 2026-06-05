@@ -3,6 +3,7 @@ package com.library.constant;
 public enum ReaderType {
     STUDENT(3),
     LECTURER(5);
+    
 
     private final int maxBooks;
 
