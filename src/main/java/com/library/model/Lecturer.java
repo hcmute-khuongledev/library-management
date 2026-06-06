@@ -5,19 +5,25 @@ import com.library.constant.ReaderType;
 public class Lecturer extends Reader {
 
     public Lecturer(String name, String email) {
-        super(name, email, ReaderType.LECTURER);
+        super(name, email);
     }
-
     
+    @Override
     public int getMaxBorrow() {
-        return getReaderType().getMaxBooks();
+        return ReaderType.LECTURER.getMaxBooks();
     }
 
+    @Override
     public double calculateLateFee(int daysLate) {
         if (daysLate <= 0) {
             return 0;
         }
         return daysLate * 2000;
+    }
+
+    @Override
+    public String getDisplayType() {
+        return ReaderType.LECTURER.name();
     }
 
     // @Override

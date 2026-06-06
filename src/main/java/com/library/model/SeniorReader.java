@@ -5,23 +5,29 @@ import com.library.constant.ReaderType;
 class SeniorReader extends Reader {
     private String seniorCardNumber;
 
-    // public SeniorReader(String name, String seniorCardNumber) {
-    //     // super(name);
-    // }
+    public SeniorReader(String name, String email, String seniorCardNumber) {
+        super(name, email);
+        this.seniorCardNumber = seniorCardNumber;
+    }
 
     @Override
     public int getMaxBorrow() {
-        return 10;
+        return ReaderType.SENIOR.getMaxBooks();
     }
 
     @Override
     public double calculateLateFee(int daysLate) {
-        return daysLate * 0.5; // 0.5 currency units per day late
+        return 0.0;
+    }
+
+    @Override
+    public String getDisplayType() {
+        return ReaderType.SENIOR.name();
     }
 
     @Override
     public String getInfo() {
-        return String.format("Reader Code: %s | Name: %s | Email: %s | Type: Senior", getReaderCode(), getFullName(), getEmail());
+        return "[SR] " + getReaderCode() + " | " + getFullName() + " | Email: " + getEmail() + " | Han muon: " + getMaxBorrow() + " cuon | So the cao cap: " + seniorCardNumber;
     }
     
 }

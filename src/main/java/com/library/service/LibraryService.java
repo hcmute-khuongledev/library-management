@@ -49,10 +49,10 @@ public class LibraryService {
         }
 
         int newRequestCount = bookCodes.size();
-        if (activeBorrowedCount + newRequestCount > reader.getMaxBorrowLimit()) {
+        if (activeBorrowedCount + newRequestCount > reader.getMaxBorrow()) {
             System.out.println("Reader has reached the maximum borrow limit!");
             System.out.println("You have: " + activeBorrowedCount + " books borrowed. Requesting: " + newRequestCount + " books.");
-            System.out.println("Maximum borrow limit for this reader: " + reader.getMaxBorrowLimit() + " books.");
+            System.out.println("Maximum borrow limit for this reader: " + reader.getMaxBorrow() + " books.");
             return false;
         }
         

@@ -1,21 +1,17 @@
 package com.library.model;
 
-import com.library.constant.ReaderType;
-
 abstract public class Reader {
     private static long COUNTER_ID = 1;
     private long id;
     private String readerCode;
     private String name;
     private String email;
-    private ReaderType readerType;
 
-    public Reader(String name, String email, ReaderType readerType) {
+    public Reader(String name, String email) {
         this.id = COUNTER_ID++;
         this.readerCode = generateReaderCode();
         this.name = name;
         this.email = email;
-        this.readerType = readerType;
     }
 
     private String generateReaderCode() {
@@ -24,6 +20,7 @@ abstract public class Reader {
 
     public abstract int getMaxBorrow();
     public abstract double calculateLateFee(int daysLate);
+    public abstract String getDisplayType();
 
     public String getReaderCode() { return this.readerCode; }
     public String getFullName() { return this.name; }
@@ -32,12 +29,6 @@ abstract public class Reader {
     public String getEmail() { return this.email; }
     public void setEmail(String email) { this.email = email; }
 
-    public ReaderType getReaderType() { return this.readerType; }
-    public void setReaderType(ReaderType readerType) { this.readerType = readerType; }
-
-    public int getMaxBorrowLimit() {
-        return getReaderType().getMaxBooks();
-    }   
 
     // @Override
     // public String toString() {
