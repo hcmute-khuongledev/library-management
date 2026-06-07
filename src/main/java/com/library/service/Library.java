@@ -6,28 +6,59 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.library.interfaces.LateFeePolicy;
 import com.library.model.Book;
 import com.library.model.BorrowSlip;
-import com.library.model.Lecturer;
+import com.library.model.LecturerReader;
 import com.library.model.Reader;
-import com.library.model.Student;
-import com.library.model.Senior;
+import com.library.model.StudentReader;
+import com.library.model.SeniorReader;
+import com.library.model.StandardFeePolicy;
 
-public class LibraryService {
-    private List<Book> books = new ArrayList<>();
-    private List<Reader> readers = new ArrayList<>();
-    private List<BorrowSlip> borrowSlips = new ArrayList<>();
+public class Library {
+    private List<Book> books;
+    private List<Reader> readers;
+    private List<BorrowSlip> borrowSlips;
+    private LateFeePolicy feePolicy;
+
+    public Library() {
+        this.books = new ArrayList<>();
+        this.readers = new ArrayList<>();
+        this.borrowSlips = new ArrayList<>();
+        this.feePolicy = new StandardFeePolicy();
+    }
 
     public void initData() {
-        books.add(new Book("Lap trinh Java Core", "Nguyen Van A", 2023, 8));
-        books.add(new Book("Huong doi tuong voi Java", "Tran Thi B", 2022, 9));
-        books.add(new Book("Cau truc du lieu & giai thuat", "Nguyen Van A", 2024, 15));
+        books.add(new Book("Lap trinh Java Core", "Nguyen Van A", 2023, 8, false));
+        books.add(new Book("Huong doi tuong voi Java", "Tran Thi B", 2022, 9, false));
+        books.add(new Book("Cau truc du lieu & giai thuat", "Nguyen Van A", 2024, 15, false));
+        books.add(new Book("Giai thuat nang cao", "Le Thi C", 2021, 5, true));
+        books.add(new Book("Lap trinh web voi Java", "Pham Van D", 2023, 7, true));
 
-        readers.add(new Student("Le Khuong", "26tx810014@student.hcmute.edu.vn"));
-        readers.add(new Student("Nguyen Van N", "26tx810015@student.hcmute.edu.vn"));
-        readers.add(new Lecturer("Thay Phuc", "phuc@hcmute.edu.vn"));
-        readers.add(new Senior("Ong Nguyen Van A", "nguyen@hcmute.edu.vn", "SR-001"));
+        readers.add(new StudentReader("Le Khuong", "26tx810014@student.hcmute.edu.vn"));
+        readers.add(new StudentReader("Nguyen Van N", "26tx810015@student.hcmute.edu.vn"));
+        readers.add(new LecturerReader("Thay Phuc", "phuc@hcmute.edu.vn"));
+        readers.add(new SeniorReader("Ong Nguyen Van A", "nguyen@hcmute.edu.vn", "SR-001"));
     }
+
+    public void setFeePolicy(LateFeePolicy policy) {
+        this.feePolicy = policy;
+        System.out.println("Cap nhat chinh sach phi phat: " + policy.getPolicyName());
+    }
+
+    public double calculateTotalFee(int daysLate) {
+        double total = 0;
+        for (Reader r : readers) {
+            double baseFee = r.calculateLateFee(daysLate);
+            double adjustedFee = feePolicy.applyPolicy(baseFee);
+            System.out.printf("  %-20s | Base: %6.0f | Sau CS: %6.0f VND%n", r.getFullName(), baseFee, adjustedFee);
+            total += adjustedFee;
+        }
+        System.out.printf("Tong phi phat (%s): %.0f VND%n", feePolicy.getPolicyName(), total);
+        return total;
+    }
+
 
     public void addBook(Book book) { books.add(book); }
     public void addReader(Reader reader) { readers.add(reader); }
@@ -51,10 +82,10 @@ public class LibraryService {
         }
 
         int newRequestCount = bookCodes.size();
-        if (activeBorrowedCount + newRequestCount > reader.getMaxBorrow()) {
+        if (activeBorrowedCount + newRequestCount > reader.getMaxBorrowLimit()) {
             System.out.println("Reader has reached the maximum borrow limit!");
             System.out.println("You have: " + activeBorrowedCount + " books borrowed. Requesting: " + newRequestCount + " books.");
-            System.out.println("Maximum borrow limit for this reader: " + reader.getMaxBorrow() + " books.");
+            System.out.println("Maximum borrow limit for this reader: " + reader.getMaxBorrowLimit() + " books.");
             return false;
         }
         
@@ -136,7 +167,7 @@ public class LibraryService {
     }
 
     public double calculateTotalLateFees(int daysLate) {
-        double totalFees = 0.0;
+        double totalFees = 0;
         for (Reader r : readers) {
             totalFees += r.calculateLateFee(daysLate);
         }
@@ -231,14 +262,20 @@ public class LibraryService {
         return null;
     }
 
-    public List<Senior> printSeniorReaders() {
-        List<Senior> seniors = new ArrayList<>();
+    public void printSeniorReaders() {
+        System.out.println("=== DANH SACH DOC GIA NGUOI CAO TUOI ===");
+        int count = 0;
         for (Reader reader : readers) {
-            if (reader instanceof Senior) {
-                seniors.add((Senior) reader);
+            if (reader instanceof SeniorReader) {
+                SeniorReader seniorReader = (SeniorReader) reader;
+                System.out.println(seniorReader.getInfo());
+                System.out.println("Ma the NCT: " + seniorReader.getSeniorCardNumber());
+                count++;
             }
         }
-        return seniors;
+        
+        if (count == 0)
+            System.out.println("Khong co doc gia nguoi cao tuoi nao!");
     }
 
     public Reader findReaderByEmail(String email) {

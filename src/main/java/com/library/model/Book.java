@@ -9,8 +9,9 @@ public class Book {
     private int publishYear;
     private int quantity;
     private boolean isAvailable;
+    private boolean referenceOnly;
     
-    public Book(String title, String author, int year, int quantity) {
+    public Book(String title, String author, int year, int quantity, boolean referenceOnly) {
         this.id = COUNTER_ID++;
         this.bookCode = generateBookCode();
         this.title = title;
@@ -18,6 +19,7 @@ public class Book {
         this.publishYear = year;
         this.quantity = quantity;
         this.isAvailable = quantity > 0;
+        this.referenceOnly = referenceOnly;
     }
 
     private String generateBookCode() {
@@ -43,6 +45,7 @@ public class Book {
 
     public boolean isAvailable() { return isAvailable; }
 
+    public boolean isReferenceOnly() { return referenceOnly; }
 
     @Override
     public String toString() {

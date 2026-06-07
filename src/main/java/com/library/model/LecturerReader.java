@@ -2,14 +2,14 @@ package com.library.model;
 
 import com.library.constant.ReaderType;
 
-public class Lecturer extends Reader {
+public class LecturerReader extends Reader {
 
-    public Lecturer(String name, String email) {
+    public LecturerReader(String name, String email) {
         super(name, email);
     }
     
     @Override
-    public int getMaxBorrow() {
+    public int getMaxBorrowLimit() {
         return ReaderType.LECTURER.getMaxBooks();
     }
 
@@ -20,6 +20,12 @@ public class Lecturer extends Reader {
         }
         return daysLate * 2000;
     }
+
+    @Override
+    public boolean checkSpecialCondition(Book book) { return true; }
+
+    @Override
+    public String getSpecialConditionMessage() { return ""; }
 
     @Override
     public String getDisplayType() {
@@ -33,6 +39,6 @@ public class Lecturer extends Reader {
 
     @Override 
     public String getInfo() { 
-        return "[GV] " + getReaderCode() + " | " + getFullName() + " | Email: " + getEmail() + " | Han muon: " + getMaxBorrow() + " cuon"; 
+        return "[GV] " + getReaderCode() + " | " + getFullName() + " | Email: " + getEmail() + " | Han muon: " + getMaxBorrowLimit() + " cuon"; 
     } 
 }

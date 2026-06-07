@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Scanner;
 import com.library.model.Book;
 import com.library.model.BorrowSlip;
-import com.library.model.Lecturer;
-import com.library.service.LibraryService;
+import com.library.model.LecturerReader;
+import com.library.service.Library;
 import com.library.model.Reader;
-import com.library.model.Student;
+import com.library.model.StudentReader;
 
 /**
  * Hello world!
  */
 public class App {
     public static void main(String[] args) {
-        LibraryService library = new LibraryService();
+        Library library = new Library();
         library.initData();
         Scanner scanner = new Scanner(System.in);
         int choice;
@@ -116,9 +116,11 @@ public class App {
                     System.out.print("Nhap ten tac gia: "); String author = scanner.nextLine();
                     System.out.print("Nhap nam xuat ban: "); int publishYear = scanner.nextInt();
                     System.out.print("Nhap so luong: "); int quantity = scanner.nextInt();
+                    System.out.print("Sach co phai chi de tham khao hiem (y/n)? "); String refOnlyInput = scanner.next();
                     scanner.nextLine();
+                    boolean referenceOnly = refOnlyInput.equalsIgnoreCase("y");
 
-                    Book newBook = new Book(title, author, publishYear, quantity);
+                    Book newBook = new Book(title, author, publishYear, quantity, referenceOnly);
                     library.addBook(newBook);
                     System.out.println("Sach moi da duoc them vao thu vien!");
                     break;
@@ -131,9 +133,9 @@ public class App {
 
                     Reader newReader;
                     if (readerTypeChoice == 1) {
-                        newReader = new Student(newReaderName, newReaderEmail);
+                        newReader = new StudentReader(newReaderName, newReaderEmail);
                     } else if (readerTypeChoice == 2) {
-                        newReader = new Lecturer(newReaderName, newReaderEmail);
+                        newReader = new LecturerReader(newReaderName, newReaderEmail);
                     } else {
                         System.out.println("Lua chon khong hop le!");
                         break;
@@ -151,11 +153,11 @@ public class App {
                             System.out.println(reader.getInfo());
                         }
                     } else {
-                        System.out.println("Khong tim thay doc gia nao voi email da nhap!");
+                        System.out.println("Khong tim thay doc gia!");
                     }
                     break;
                 default:
-                    System.out.println("Is not a valid choice. Please choose again.");
+                    System.out.println("Vui long chon lai.");
             }
         } while (choice != 0);
         scanner.close();
