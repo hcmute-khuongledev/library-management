@@ -35,5 +35,7 @@ abstract public class Reader {
     //     return String.format("Reader Code: %s | Name: %s | Email: %s | Type: %s", readerCode, name, email, readerType == ReaderType.STUDENT ? "Student" : "Teacher");
     // }
 
-    public abstract String getInfo();
+    public String getInfo() {
+        return String.format("Name: %s | Email: %s | Type: %s", name, email, getDisplayType());
+    };
 }

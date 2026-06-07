@@ -2,10 +2,10 @@ package com.library.model;
 
 import com.library.constant.ReaderType;
 
-class SeniorReader extends Reader {
+public class Senior extends Reader {
     private String seniorCardNumber;
 
-    public SeniorReader(String name, String email, String seniorCardNumber) {
+    public Senior(String name, String email, String seniorCardNumber) {
         super(name, email);
         this.seniorCardNumber = seniorCardNumber;
     }
@@ -27,7 +27,6 @@ class SeniorReader extends Reader {
 
     @Override
     public String getInfo() {
-        return "[SR] " + getReaderCode() + " | " + getFullName() + " | Email: " + getEmail() + " | Han muon: " + getMaxBorrow() + " cuon | So the cao cap: " + seniorCardNumber;
+        return super.getInfo() + String.format(" | Senior Card Number: %s | [NCT - Mien Phat]", seniorCardNumber);
     }
-    
 }

@@ -31,6 +31,7 @@ public class App {
             System.out.println("6. Xem bao cao thong ke");
             System.out.println("7. Them sach");
             System.out.println("8. Them doc gia");
+            System.out.println("9. Tim kiem doc gia");
             System.out.println("0. Exit");
             System.out.print("Chon chuc nang: ");
             
@@ -40,7 +41,7 @@ public class App {
             switch (choice) {
                 case 1:
                     library.showAllBooks();
-                    library.showAllReaders();
+                    library.printAllReaders();
                     break;
 
                 case 2:
@@ -141,6 +142,18 @@ public class App {
                     System.out.println("Doc gia moi da duoc them vao thu vien!");
                     break;
 
+                case 9:
+                    System.out.print("Nhap email hoac ten doc gia can tim: "); String keysearch = scanner.nextLine();
+                    List<Reader> foundReaders = library.searchReader(keysearch);
+                    if (!foundReaders.isEmpty()) {
+                        System.out.println("Tim thay " + foundReaders.size() + " doc gia:");
+                        for (Reader reader : foundReaders) {
+                            System.out.println(reader.getInfo());
+                        }
+                    } else {
+                        System.out.println("Khong tim thay doc gia nao voi email da nhap!");
+                    }
+                    break;
                 default:
                     System.out.println("Is not a valid choice. Please choose again.");
             }

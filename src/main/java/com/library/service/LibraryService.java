@@ -11,6 +11,7 @@ import com.library.model.BorrowSlip;
 import com.library.model.Lecturer;
 import com.library.model.Reader;
 import com.library.model.Student;
+import com.library.model.Senior;
 
 public class LibraryService {
     private List<Book> books = new ArrayList<>();
@@ -23,8 +24,9 @@ public class LibraryService {
         books.add(new Book("Cau truc du lieu & giai thuat", "Nguyen Van A", 2024, 15));
 
         readers.add(new Student("Le Khuong", "26tx810014@student.hcmute.edu.vn"));
-        readers.add(new Student("Phan Dang Khoa", "26tx810015@student.hcmute.edu.vn"));
+        readers.add(new Student("Nguyen Van N", "26tx810015@student.hcmute.edu.vn"));
         readers.add(new Lecturer("Thay Phuc", "phuc@hcmute.edu.vn"));
+        readers.add(new Senior("Ong Nguyen Van A", "nguyen@hcmute.edu.vn", "SR-001"));
     }
 
     public void addBook(Book book) { books.add(book); }
@@ -119,18 +121,26 @@ public class LibraryService {
         } 
     } 
 
-    public void showAllReaders() { 
-        System.out.println("=== DANH SACH DOC GIA ==="); 
-        for (Reader r : readers) { 
+    public void printAllReaders() {
+        System.out.println("=== DANH SACH DOC GIA ("+ readers.size() + " nguoi ) ===");
+        for (Reader r : readers) {
             System.out.println(r.getInfo());
-        } 
-    } 
+        }
+    }
 
     public void showAllBooks() { 
         System.out.println("=== DANH SACH SACH HIEN CO ==="); 
         for (Book b : books) { 
             System.out.println(b);
         } 
+    }
+
+    public double calculateTotalLateFees(int daysLate) {
+        double totalFees = 0.0;
+        for (Reader r : readers) {
+            totalFees += r.calculateLateFee(daysLate);
+        }
+        return totalFees;
     }
 
     public List<Book> searchBook(String keyword) {
@@ -202,6 +212,16 @@ public class LibraryService {
         return null;
     }
 
+    public List<Reader> searchReader(String keyword) {
+        List<Reader> result = new ArrayList<>();
+        for (Reader reader : readers) {
+            if (reader.getFullName().toLowerCase().contains(keyword.toLowerCase()) || reader.getEmail().toLowerCase().contains(keyword.toLowerCase())) {
+                result.add(reader);
+            }
+        }
+        return result;
+    }
+
     public Reader findReaderByCode(String readerCode) {
         for (Reader reader : readers) {
             if (reader.getReaderCode().equals(readerCode)) {
@@ -209,6 +229,16 @@ public class LibraryService {
             }
         }
         return null;
+    }
+
+    public List<Senior> printSeniorReaders() {
+        List<Senior> seniors = new ArrayList<>();
+        for (Reader reader : readers) {
+            if (reader instanceof Senior) {
+                seniors.add((Senior) reader);
+            }
+        }
+        return seniors;
     }
 
     public Reader findReaderByEmail(String email) {

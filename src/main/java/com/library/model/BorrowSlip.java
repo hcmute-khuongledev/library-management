@@ -1,6 +1,5 @@
 package com.library.model;
 
-import com.library.constant.LibraryConstant;
 import java.time.LocalDate;
 import java.util.List;
 
