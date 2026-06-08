@@ -36,6 +36,6 @@ public class StudentReader extends Reader {
 
     @Override 
     public String getInfo() { 
-        return "[SV] " + getReaderCode() + " | " + getFullName() + " | Email: " + getEmail() + " | Han muon: " + getMaxBorrowLimit() + " cuon"; 
+        return "[SV] " + getReaderCode() + " | Ten: " + getFullName() + " | Email: " + getEmail() + " | Han muon: " + getMaxBorrowLimit() + " cuon"; 
     } 
 }

@@ -41,6 +41,13 @@ public class BorrowSlip {
         return String.format("HCMUTE-SLIP-%05d", id);
     }
 
+    public int calculateDaysLate(LocalDate currentDate) {
+        if (currentDate.isAfter(dueDate)) {
+            return (int) java.time.temporal.ChronoUnit.DAYS.between(dueDate, currentDate);
+        }
+        return 0;
+    }
+
     public void markAsReturned() {
         this.isReturned = true;
     }

@@ -63,6 +63,7 @@ public class Library {
     public void addBook(Book book) { books.add(book); }
     public void addReader(Reader reader) { readers.add(reader); }
     public void addBorrowSlip(BorrowSlip slip) { borrowSlips.add(slip); }
+    public void removeBorrowSlip(BorrowSlip slip) { borrowSlips.remove(slip); }
 
     public List<Book> getBooks() { return books; }
     public List<Reader> getReaders() { return readers; }
