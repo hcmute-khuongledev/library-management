@@ -52,7 +52,7 @@ public class BorrowSlip {
             bookTitles.append("【").append(b.getTitle()).append("】 ");
         }
 
-        return String.format("Slip Code: %s | Reader: %s | Books: %s | Borrow Date: %s | Due Date: %s | Status: %s",
-                slipCode, reader.getFullName(), bookTitles.toString(), borrowDate, dueDate, isReturned ? "Returned" : "Not Returned");
+        return String.format("Ma phieu: %s | Doc gia: %s | Sach: %s | Ngay muon: %s | Ngay tra: %s | Trang thai: %s",
+                slipCode, reader.getFullName(), bookTitles.toString(), borrowDate, dueDate, isReturned ? "Da tra" : "Chua tra");
     }
 }
