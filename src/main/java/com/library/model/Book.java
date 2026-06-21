@@ -75,7 +75,7 @@ public class Book implements Borrowable {
 
     @Override
     public String toString() {
-        return String.format("Book Code: %s | Title: %s | Author: %s | Available: %d", bookCode, title, author, quantity);
+        return String.format("Ma sach: %s | Ten sach: %s | Tac gia: %s | Co san: %d | Sach hiem tham khao: %s", bookCode, title, author, quantity, referenceOnly ? "Co" : "Khong");
     }
 
     public void decreaseQuantity() {

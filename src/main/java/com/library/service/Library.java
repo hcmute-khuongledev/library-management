@@ -65,6 +65,8 @@ public class Library implements Searchable {
 
     public void addBook(Book book) { books.add(book); }
     public void addReader(Reader reader) { readers.add(reader); }
+    public void addBorrowSlip(BorrowSlip slip) { borrowSlips.add(slip); }
+    public void removeBorrowSlip(BorrowSlip slip) { borrowSlips.remove(slip); }
 
     public List<Book> getBooks() { return books; }
     public List<Reader> getReaders() { return readers; }
@@ -88,7 +90,7 @@ public class Library implements Searchable {
         Reader reader = findReaderByEmail(readerEmail);
         
         if (reader == null) {
-            System.out.println("Reader " + readerEmail + " not found!");
+            System.out.println("Doc gia " + readerEmail + " khong tim thay!");
             return false;
         } 
 
@@ -101,9 +103,9 @@ public class Library implements Searchable {
 
         int newRequestCount = bookCodes.size();
         if (activeBorrowedCount + newRequestCount > reader.getMaxBorrowLimit()) {
-            System.out.println("Reader has reached the maximum borrow limit!");
-            System.out.println("You have: " + activeBorrowedCount + " books borrowed. Requesting: " + newRequestCount + " books.");
-            System.out.println("Maximum borrow limit for this reader: " + reader.getMaxBorrowLimit() + " books.");
+            System.out.println("Doc gia da dat den gioi han muon sach!");
+            System.out.println("Ban da muon: " + activeBorrowedCount + " sach. Dang yeu cau: " + newRequestCount + " sach.");
+            System.out.println("Gioi han muon toi da cho doc gia nay: " + reader.getMaxBorrowLimit() + " sach.");
             return false;
         }
         
@@ -111,21 +113,21 @@ public class Library implements Searchable {
         for (String code : bookCodes) {
             Book book = findBookByCode(code);
             if (book == null) {
-                System.out.println("Error: Book with code " + code + " not found!");
+                System.out.println("Loi: Ma sach " + code + " khong tim thay!");
                 return false;
             }
             if (!book.isAvailable()) {
-                System.out.println("Error: Book " + book.getTitle() + " is currently unavailable!");
+                System.out.println("Loi: Sach " + book.getTitle() + " khong co san!");
                 return false;
             }
             selectedBooks.add(book);
         }
         BorrowSlip slip = new BorrowSlip(reader, selectedBooks, borrowDate, dueDate);
-        borrowSlips.add(slip);
+        addBorrowSlip(slip);
         System.out.println("\n========================================");
-        System.out.println("CREATED NEW BORROW SLIP!");
-        System.out.println("Your slip code: " + slip.getSlipCode());
-        System.out.println("Total books borrowed today: " + newRequestCount + " books");
+        System.out.println("DA TAO PHIEU MUON!");
+        System.out.println("Ma phieu: " + slip.getSlipCode());
+        System.out.println("Tong so sach: " + newRequestCount + " sach");
         System.out.println("========================================\n");
         return true;
     }
@@ -135,12 +137,12 @@ public class Library implements Searchable {
         LocalDate returnDate = LocalDate.now();
 
         if (borrowSlip == null) {
-            System.out.println("Borrow slip not found!");
+            System.out.println("Phieu muon sach khong ton tai!");
             return false;
         }
 
         if (borrowSlip.isReturned()) {
-            System.out.println("This book has already been returned!");
+            System.out.println("Sach nay da duoc tra!");
             return false;
         }
 
@@ -154,11 +156,11 @@ public class Library implements Searchable {
             long lateDays = ChronoUnit.DAYS.between(borrowSlip.getDueDate(), returnDate);
             // long fine = borrowSlip.getReader().calculateFine((int) lateDays);
 
-            System.out.println("Late: " + lateDays + " days");
-            // System.out.println("Fine: " + fine + " VND");
+            System.out.println("Tre han: " + lateDays + " ngay");
+            // System.out.println("Phí phat: " + fine + " VND");
         }
 
-        System.out.println("Book returned successfully.");
+        System.out.println("Sach da duoc tra thanh cong.");
         return true;
     }
 
@@ -268,8 +270,8 @@ public class Library implements Searchable {
                 topReader = entry.getKey();
             }
         }
-        System.out.println("Top borrowed book: " + topBook + " (" + maxBookCount + " times)");
-        System.out.println("Top reader: " + topReader + " (" + maxReaderCount + " times)");
+        System.out.println("Sach duoc muon nhieu nhat: " + topBook + " (" + maxBookCount + " lan)");
+        System.out.println("Doc gia muon nhieu nhat: " + topReader + " (" + maxReaderCount + " lan)");
     }
 
     public BorrowSlip findSlipByCode(String slipCode) {

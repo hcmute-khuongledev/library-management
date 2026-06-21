@@ -7,8 +7,10 @@ import java.util.Scanner;
 import com.library.model.Book;
 import com.library.model.BorrowSlip;
 import com.library.model.LecturerReader;
+import com.library.model.Librarian;
 import com.library.service.Library;
 import com.library.model.Reader;
+import com.library.model.SeniorReader;
 import com.library.model.StudentReader;
 
 /**
@@ -18,6 +20,22 @@ public class App {
     public static void main(String[] args) {
         Library library = new Library();
         library.initData();
+        List<Book> books = new ArrayList<>();
+
+        Librarian libr   = new Librarian("Admin thu vien", "0123456789", "Sang", library);
+
+        Reader sv   = new StudentReader("Nguyen Van A", "vana@gmail.com");
+        Reader nctu = new SeniorReader("Le Van C", "levanc@gmail.com", "1122334455");
+        Book book = new Book("Lap trinh Java Core", "Nguyen Van A", 2024, 3, true);
+        books.add(book);
+        
+        library.addReader(sv);
+        library.addReader(nctu);
+        library.addBook(book);
+
+        libr.processLoan(sv, books);
+        libr.processLoan(nctu, books);
+
         Scanner scanner = new Scanner(System.in);
         int choice;
 
