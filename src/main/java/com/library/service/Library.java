@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.library.interfaces.Borrowable;
 import com.library.interfaces.LateFeePolicy;
+import com.library.interfaces.Notifiable;
+import com.library.interfaces.Searchable;
 import com.library.model.Book;
 import com.library.model.BorrowSlip;
 import com.library.model.LecturerReader;
@@ -16,7 +19,7 @@ import com.library.model.StudentReader;
 import com.library.model.SeniorReader;
 import com.library.model.StandardFeePolicy;
 
-public class Library {
+public class Library implements Searchable {
     private List<Book> books;
     private List<Reader> readers;
     private List<BorrowSlip> borrowSlips;
@@ -65,6 +68,21 @@ public class Library {
 
     public List<Book> getBooks() { return books; }
     public List<Reader> getReaders() { return readers; }
+
+    public void processAllBorrowable(List<Borrowable> items) {
+        System.out.println("==== BORROWABLE ITEM ====");
+        for (Borrowable item : items) {
+            String s = item.isAvailable() ? "Available" : "Borrowed by " + item.getBorrowerId();
+            System.out.println(" - " + s);
+        }
+    }
+
+    public void notifyAll(List<Notifiable> users, String message) {
+        System.out.println("=== SEND NOTIFICATIONS ===");
+        for (Notifiable user : users) {
+            user.sendNotification(message);
+        }
+    }
 
     public boolean borrowBook(String readerEmail, List<String> bookCodes, LocalDate borrowDate, LocalDate dueDate) {
         Reader reader = findReaderByEmail(readerEmail);
@@ -126,7 +144,7 @@ public class Library {
             return false;
         }
 
-        borrowSlip.setReturnDate(returnDate);
+        borrowSlip.setReturnDate(returnDate.toString());
         borrowSlip.markAsReturned();
         for (Book b : borrowSlip.getBooks()) {
             b.increaseQuantity();
@@ -180,6 +198,26 @@ public class Library {
             if (book.getTitle().toLowerCase().contains(keyword.toLowerCase()) || book.getAuthor().toLowerCase().contains(keyword.toLowerCase())) {
                 result.add(book);
             }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Book> searchByTitle(String keyword) {
+        String kw = Searchable.normalizeKeyword(keyword);
+        List<Book> result = new ArrayList<>();
+        for (Book b : books) {
+            if (b.getTitle().toLowerCase().contains(kw)) result.add(b);
+        }
+        return result;
+    }
+
+    @Override
+    public List<Book> searchByAuthor(String keyword) {
+        String kw = Searchable.normalizeKeyword(keyword);
+        List<Book> result = new ArrayList<>();
+        for (Book b : books) {
+            if (b.getAuthor().toLowerCase().contains(kw)) result.add(b);
         }
         return result;
     }

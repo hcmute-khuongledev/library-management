@@ -2,8 +2,9 @@ package com.library.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import com.library.interfaces.Returnable;
 
-public class BorrowSlip {
+public class BorrowSlip implements Returnable {
     private static long COUNTER_ID = 1;
     private long id;
     private String slipCode;
@@ -11,7 +12,7 @@ public class BorrowSlip {
     private List<Book> books;
     private LocalDate borrowDate;
     private LocalDate dueDate;
-    private LocalDate returnDate;
+    private String returnDate;
     private boolean isReturned;
 
     public BorrowSlip(Reader reader, List<Book> books, LocalDate borrowDate, LocalDate dueDate) {
@@ -33,12 +34,26 @@ public class BorrowSlip {
     public List<Book> getBooks() { return this.books; }
     public LocalDate getBorrowDate() { return this.borrowDate; }
     public LocalDate getDueDate() { return this.dueDate; }
-    public LocalDate getReturnDate() { return this.returnDate; }
-    public void setReturnDate(LocalDate returnDate) { this.returnDate = returnDate; }
-    public boolean isReturned() { return this.isReturned; }
+    public void setReturnDate(String returnDate) { this.returnDate = returnDate; }
     
     private String generateSlipCode() {
         return String.format("HCMUTE-SLIP-%05d", id);
+    }
+
+    @Override
+    public void confirmReturn(String date) {
+        this.returnDate = date;
+        System.out.println("Slip " + slipCode + " confirmed return on " + date);
+    }
+
+    @Override
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+    @Override
+    public boolean isReturned() {
+        return returnDate != null;
     }
 
     public void markAsReturned() {

@@ -1,12 +1,19 @@
 package com.library.model;
 
-abstract public class Reader {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.library.interfaces.Notifiable;
+
+abstract public class Reader implements Notifiable {
     private static long COUNTER_ID = 1;
     private long id;
     private String readerCode;
     private String name;
     private String email;
     protected int currentBorrowCount;
+    private final List<String> notifications = new ArrayList<>();
 
     public Reader(String name, String email) {
         this.id = COUNTER_ID++;
@@ -17,6 +24,17 @@ abstract public class Reader {
 
     private String generateReaderCode() {
         return String.format("HCMUTE-READER-%05d", id);
+    }
+
+    @Override
+    public void sendNotification(String message) {
+        notifications.add(message);
+        System.out.println("[" + name + "] " + message);
+    }
+
+    @Override
+    public List<String> getNotificationHistory() {
+        return Collections.unmodifiableList(notifications);
     }
 
     public abstract double calculateLateFee(int daysLate);

@@ -1,6 +1,7 @@
 package com.library.model;
+import com.library.interfaces.Borrowable;
 
-public class Book {
+public class Book implements Borrowable {
     private static long COUNTER_ID = 1;
     private long id;
     private String bookCode;
@@ -10,6 +11,9 @@ public class Book {
     private int quantity;
     private boolean isAvailable;
     private boolean referenceOnly;
+    private String currentBorrowerId;
+    private String borrowDate;
+
     
     public Book(String title, String author, int year, int quantity, boolean referenceOnly) {
         this.id = COUNTER_ID++;
@@ -25,6 +29,28 @@ public class Book {
     private String generateBookCode() {
         return String.format("HCMUTE-BOOK-%05d", id);
     }
+
+    @Override
+    public void borrowBy(String readerId, String date) {
+        if (!isAvailable()) {
+            System.out.println("Book '" + title + "' is not available.");
+            return;
+        }
+        this.currentBorrowerId = readerId;
+        this.borrowDate = date;
+        System.out.println("Book '" + title + "' borrowed by " + readerId);
+    }
+
+    @Override
+    public void returnBook(String date) {
+        System.out.println("Book '" + title + "' returned on " + date);
+        this.currentBorrowerId = null;
+        this.borrowDate = null;
+    }
+
+    @Override
+    public String getBorrowerId() { return currentBorrowerId; }
+
 
     public String getBookCode() { return bookCode; }
 
